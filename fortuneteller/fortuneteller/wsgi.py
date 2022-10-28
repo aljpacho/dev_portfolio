@@ -1,5 +1,5 @@
 """
-WSGI config for fortune_teller project.
+WSGI config for fortuneteller project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fortune_teller.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fortuneteller.settings")
 
 application = get_wsgi_application()
