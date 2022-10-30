@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
@@ -69,9 +69,11 @@ def home():
 
 @app.route("/stories")
 def get_stories():
-    stories = db.session.query(Story).all()
-    print(stories)
-    return "Stories"
+    story_objects = db.session.query(Story).all()
+    
+    stories = [parse_story_to_dictionary(story) for story in story_objects]
+
+    return jsonify({"stories": (stories), "success": True, "total_stories": len(stories)})
 
 
 @app.route("/stories/<story_id>")
