@@ -1,0 +1,28 @@
+.downvote {
+    margin-left: 0.5rem;
+  }
+  
+.title {
+margin-left: 1rem;
+}
+
+body {
+background: #d53d22;
+font-family: 'Inter', Arial, sans-serif;
+}
+
+main {
+background: #fff;
+padding: 1rem 3rem 2rem;
+width: 900px;
+margin: 2rem auto;
+box-shadow: rgba(0, 0, 0, 0.05) -2px -2px 4px;
+}
+
+header {
+background: #fff;
+padding: 1rem 3rem 1rem;
+width: 900px;
+margin: 2rem auto;
+box-shadow: rgba(0, 0, 0, 0.05) -2px -2px 4px;
+}
