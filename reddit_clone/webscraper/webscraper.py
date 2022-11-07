@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 
 POST_BLOCK_CLASS = "post-block__header"
+AUTHOR_CLASS = "river-byline__authors"
 
 # webscraping tech crunch
 def get_webpage(url: str):
@@ -52,8 +53,8 @@ def get_title(filtered_soup_element) -> str:
     Returns:
         title: the text for a title
     """
-    title_link_tag = filtered_soup_element.a
-    title = title_link_tag.get_text().strip()
+    title_a_tag = filtered_soup_element.a
+    title = title_a_tag.get_text().strip()
     return title
 
 
@@ -66,13 +67,23 @@ def get_url(filtered_soup_element) -> str:
     Returns:
         url: the url for a story
     """
-    url_link_tag = filtered_soup_element.a
-    url = url_link_tag["href"]
+    url_a_tag = filtered_soup_element.a
+    url = url_a_tag["href"]
     return url
 
 
-def get_author(filtered_soup):
-    pass
+def get_author(filtered_soup_element) -> str:
+    """Returns the author associated with a story
+
+    Args:
+        filtered_soup_element: an element from a BeautifulSoup object
+
+    Returns:
+        author: the author for a story
+    """
+    author_elements = filtered_soup_element.find(attrs={"class": AUTHOR_CLASS})
+    author = author_elements.get_text()
+    return author
 
 
 def get_created_date(filtered_soup):
@@ -92,4 +103,4 @@ if __name__ == "__main__":
 
     for i, obj in enumerate(filtered_soup):
         print(f"Story {i} \n\n")
-        print(f"{get_url(obj)}\n\n")
+        print(f"{get_author(obj)}\n\n")
