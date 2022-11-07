@@ -4,6 +4,7 @@ import psycopg2
 import requests
 from bs4 import BeautifulSoup as bs
 
+POST_BLOCK_CLASS = "post-block__header"
 
 # webscraping tech crunch
 def get_webpage(url: str):
@@ -26,20 +27,39 @@ def get_webpage(url: str):
 
 # scrape: title, url, author, created_at
 
-def filter_soup(soup):
-    # filter the soup using given *args 
-    return soup.find_all(attrs={"class":  "post-block__header"})
+def filter_soup(soup, class_attr=POST_BLOCK_CLASS) -> list:
+    """Filter BeautifulSoup object by a given class attribute
 
-def get_title(soup):
+    Args:
+        soup: BeautifulSoup object 
+        class_attr (str, optional): HTML class attribute. Defaults to POST_BLOCK_CLASS.
+
+    Returns:
+        filtered_soup: a list of all elements that include the class_attr
+    """
+    filtered_soup = soup.find_all(attrs={"class":  class_attr})
+    return filtered_soup
+
+def get_title(filtered_soup_element) -> str:
+    """Returns the title from an HTML <a> tag
+
+    Args:
+        filtered_soup_element: an element from a BeautifulSoup object
+
+    Returns:
+        title: the text for a title
+    """
+    title_link_tag = filtered_soup_element.a
+    title = title_link_tag.get_text().strip()
+    return title
+
+def get_url(filtered_soup):
     pass
 
-def get_url(soup):
+def get_author(filtered_soup):
     pass
 
-def get_author(soup):
-    pass
-
-def get_created_date(soup):
+def get_created_date(filtered_soup):
     pass
 
 
@@ -50,7 +70,12 @@ if __name__ == "__main__":
 
     filtered_soup = filter_soup(tech_crunch_soup)
 
+    # for i, obj in enumerate(filtered_soup):
+    #     print(f"Object {i} \n \n")
+    #     print(f"\n {obj} \n")
+    #     print('\n \n')
+
     for i, obj in enumerate(filtered_soup):
-        print(f"Object {i} \n \n")
-        print(f"\n {obj} \n")
-        print('\n \n')
+        print(f"Story {i} \n\n")
+        print(f"{get_title(obj)}\n\n")
+        
