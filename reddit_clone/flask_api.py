@@ -27,7 +27,6 @@ class Story(db.Model):
     url = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    score = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return "<Story %r>" % self.title
@@ -60,7 +59,7 @@ def story_object_to_dictionary(story_obj: Story) -> dict:
         "url": story_obj.url,
         "created_at": story_obj.created_at,
         "updated_at": story_obj.updated_at,
-        "score": story_obj.score
+        "score": story_obj.score,
     }
 
     return story_dict
@@ -106,11 +105,31 @@ def home():
 @app.route("/stories", methods=["GET"])
 def get_vote_score_by_story():
 
-    story_objects = db.session.query(Story).all()
+    # story_objects = db.session.query(Story).all()
+
+    story_objects = db.session.query()
+
+    """
+    select stories.*,
+        sum(case 
+            when votes.direction = 'up' then 1
+            when votes.direction = 'down' then -1
+            else 0
+        end) score
+
+        from stories
+        left join votes 
+            on votes.story_id = stories.id
+
+        group by stories.id;
+    """
+
 
     stories_list = [story_object_to_dictionary(story) for story in story_objects]
 
-    return jsonify({'stories': stories_list,  'success': True, 'total_stories': len(stories_list)})
+    return jsonify(
+        {"stories": stories_list, "success": True, "total_stories": len(stories_list)}
+    )
 
 
 @app.route("/stories/<id>", methods=["GET"])
@@ -120,12 +139,21 @@ def get_story_by_id(id):
 
     story_dictionary = story_object_to_dictionary(story_object[0])
 
-    return jsonify({'story': story_dictionary, 'success': True})
-    
+    return jsonify({"story": story_dictionary, "success": True})
+
 
 @app.route("/stories/<id>/votes", methods=["POST"])
 def add_vote(id):
-    pass
+    if request.method == "POST":
+        vote_direction = request.json.get("direction")  # either up or down
+
+        vote = Vote(story_id=id, direction=vote_direction)
+
+        db.session.add(vote)
+
+    db.session.commit()
+
+    return jsonify({"response": "vote added", "success": True})
 
 
 if __name__ == "__main__":
