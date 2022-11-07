@@ -20,6 +20,27 @@ def get_webpage(url: str):
     soup = bs(webpage, "html.parser")
     return soup
 
+# what to put into the database
+
+# stories: title, url, created_at, updated_at
+
+# scrape: title, url, author, created_at
+
+def filter_soup(*class_ids):
+    pass
+
+def get_title(soup):
+    pass
+
+def get_url(soup):
+    pass
+
+def get_author(soup):
+    pass
+
+def get_created_date(soup):
+    pass
+
 
 if __name__ == "__main__":
     tech_crunch_url = "https://techcrunch.com/"
