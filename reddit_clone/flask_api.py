@@ -4,7 +4,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import text, case, func, alias
+from sqlalchemy.sql import text, case, func
 from flask_cors import CORS
 
 load_dotenv()
@@ -56,7 +56,6 @@ def story_object_to_dictionary(story_objs: Story) -> dict:
 
     story_obj = story_objs[0]
 
-
     story_dict = {
         "id": story_obj.id,
         "title": story_obj.title,
@@ -107,9 +106,7 @@ def home():
 
 
 @app.route("/stories", methods=["GET"])
-def get_vote_score_by_story():
-
-    # story_objects = db.session.query(Story).all()
+def get_stories():
 
     story_objects = (
         db.session.query(
@@ -125,8 +122,6 @@ def get_vote_score_by_story():
         .all()
     )
 
-    print(story_objects)
-
     """
     select stories.*,
         sum(case 
@@ -141,7 +136,6 @@ def get_vote_score_by_story():
 
         group by stories.id;
     """
-   
 
     stories_list = [story_object_to_dictionary(story) for story in story_objects]
 
@@ -153,7 +147,20 @@ def get_vote_score_by_story():
 @app.route("/stories/<id>", methods=["GET"])
 def get_story_by_id(id):
 
-    story_object = Story.query.filter(Story.id == id).all()
+    story_object = (
+        db.session.query(
+            Story,
+            func.sum(
+                case(
+                    (Vote.direction == "up", 1), (Vote.direction == "down", -1), else_=0
+                )
+            ).label("score"),
+        )
+        .filter(Story.id == id)
+        .outerjoin(Vote, Vote.story_id == Story.id)
+        .group_by(Story.id)
+        .all()
+    )
 
     story_dictionary = story_object_to_dictionary(story_object[0])
 
