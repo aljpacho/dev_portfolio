@@ -1,0 +1,3 @@
+# fortuneteller
+
+## Django application
