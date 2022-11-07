@@ -12,7 +12,7 @@ load_dotenv()
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
-app.config["SQLALCHEMY_TRACK_MODFICATIONS"] = True
+app.config["SQLALCHEMY_TRACK_MODFICATIONS"] = False
 
 CORS(app, origins=["http://127.0.0.1:8080"], supports_credentials=True)
 
@@ -113,9 +113,19 @@ def get_vote_score_by_story():
     return jsonify({'stories': stories_list,  'success': True, 'total_stories': len(stories_list)})
 
 
+@app.route("/stories/<id>", methods=["GET"])
+def get_story_by_id(id):
+
+    story_object = db.session.query(Story).filter(Story.id == id).all()
+
+    story_dictionary = story_object_to_dictionary(story_object[0])
+
+    return jsonify({'story': story_dictionary, 'success': True})
+    
+
 @app.route("/stories/<id>/votes", methods=["POST"])
 def add_vote(id):
-   pass
+    pass
 
 
 if __name__ == "__main__":
