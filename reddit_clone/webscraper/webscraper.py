@@ -1,4 +1,4 @@
-# TODO: 
+# TODO:
 # put all relevant information into a dictionary
 # apply dictionary to all in soup using for loop
 # populate database
@@ -6,14 +6,14 @@
 
 from datetime import datetime
 
-import psycopg2
 import requests
 from bs4 import BeautifulSoup as bs
 
 POST_BLOCK_CLASS = "post-block__header"
 AUTHOR_CLASS = "river-byline__authors"
+TECH_CRUNCH_URL = "https://techcrunch.com/"
 
-# webscraping tech crunch
+
 def get_webpage(url: str):
     """Creates a BeautifulSoup object for a given URL
 
@@ -27,13 +27,6 @@ def get_webpage(url: str):
     webpage = webpage_response.content
     soup = bs(webpage, "html.parser")
     return soup
-
-
-# what to put into the database
-
-# stories: title, url, created_at, updated_at
-
-# scrape: title, url, author, created_at
 
 
 def filter_soup(soup, class_attr=POST_BLOCK_CLASS) -> list:
@@ -88,7 +81,7 @@ def get_author(filtered_soup_element) -> str:
         author: the author for a story
     """
     author_elements = filtered_soup_element.find(attrs={"class": AUTHOR_CLASS})
-    author = author_elements.get_text()
+    author = author_elements.get_text().strip("\n")
     return author
 
 
@@ -106,19 +99,27 @@ def get_created_date(filtered_soup_element) -> datetime:
     return datetime_parsed
 
 
+def create_story_dictionary(filtered_soup_element) -> dict:
+
+    story = {
+        "title": get_title(filtered_soup_element),
+        "author": get_author(filtered_soup_element),
+        "url": get_url(filtered_soup_element),
+        "created_at": get_created_date(filtered_soup_element),
+    }
+
+    return story
+
+
+def generate_stories(url) -> list:
+    html_soup = get_webpage(url)
+    filtered_soup = filter_soup(html_soup)
+    stories = [create_story_dictionary(story) for story in filtered_soup]
+    return stories
 
 
 if __name__ == "__main__":
-    tech_crunch_url = "https://techcrunch.com/"
-    tech_crunch_soup = get_webpage(tech_crunch_url)
+    stories = generate_stories(TECH_CRUNCH_URL)
 
-    filtered_soup = filter_soup(tech_crunch_soup)
-
-    # for i, obj in enumerate(filtered_soup):
-    #     print(f"Object {i} \n \n")
-    #     print(f"\n {obj} \n")
-    #     print('\n \n')
-
-    for i, obj in enumerate(filtered_soup):
-        print(f"Story {i} \n\n")
-        print(f"{get_created_date(obj)}\n\n")
+    for story in stories:
+        print(f"{story}\n\n")
