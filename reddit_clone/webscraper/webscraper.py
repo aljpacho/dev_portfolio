@@ -1,3 +1,9 @@
+# TODO: 
+# put all relevant information into a dictionary
+# apply dictionary to all in soup using for loop
+# populate database
+# test that is comes up on the frontend
+
 from datetime import datetime
 
 import psycopg2
@@ -86,8 +92,20 @@ def get_author(filtered_soup_element) -> str:
     return author
 
 
-def get_created_date(filtered_soup):
-    pass
+def get_created_date(filtered_soup_element) -> datetime:
+    """Returns the created date with timezone for a story
+
+    Args:
+        filtered_soup_element: an element from a BeautifulSoup object
+
+    Returns:
+        datetime_parsed: datetime object with timezone
+    """
+    datetime_element = filtered_soup_element.time.attrs["datetime"]
+    datetime_parsed = datetime.fromisoformat(datetime_element)
+    return datetime_parsed
+
+
 
 
 if __name__ == "__main__":
@@ -103,4 +121,4 @@ if __name__ == "__main__":
 
     for i, obj in enumerate(filtered_soup):
         print(f"Story {i} \n\n")
-        print(f"{get_author(obj)}\n\n")
+        print(f"{get_created_date(obj)}\n\n")
