@@ -3,6 +3,7 @@
 # apply dictionary to all in soup using for loop
 # populate database
 # test that is comes up on the frontend
+import webscraper_to_db
 
 from datetime import datetime
 
@@ -100,6 +101,15 @@ def get_created_date(filtered_soup_element) -> datetime:
 
 
 def create_story_dictionary(filtered_soup_element) -> dict:
+    """Creates a dictionary with key:value pairs for
+    title, author, url, and created_at
+
+    Args:
+        filtered_soup_element (_type_): _description_
+
+    Returns:
+        dict: _description_
+    """
 
     story = {
         "title": get_title(filtered_soup_element),
@@ -111,7 +121,16 @@ def create_story_dictionary(filtered_soup_element) -> dict:
     return story
 
 
-def generate_stories(url) -> list:
+def generate_stories(url=TECH_CRUNCH_URL) -> list:
+    """Generates a list of dictionaries with key:value pairs
+    for title, author, url, and created_at
+
+    Args:
+        url (Defaults to TECH_CRUNCH_URL)
+
+    Returns:
+        stories: list of story dictionaries
+    """
     html_soup = get_webpage(url)
     filtered_soup = filter_soup(html_soup)
     stories = [create_story_dictionary(story) for story in filtered_soup]
@@ -119,7 +138,7 @@ def generate_stories(url) -> list:
 
 
 if __name__ == "__main__":
-    stories = generate_stories(TECH_CRUNCH_URL)
+    stories = generate_stories()
 
     for story in stories:
         print(f"{story}\n\n")
