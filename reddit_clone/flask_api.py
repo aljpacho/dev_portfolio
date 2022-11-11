@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import case, func, text
@@ -101,8 +101,8 @@ def testdb():
 
 
 @app.route("/")
-def home():
-    return "Flask Reddit Clone"
+def index():
+    return render_template("index.html")
 
 
 @app.route("/stories", methods=["GET"])
