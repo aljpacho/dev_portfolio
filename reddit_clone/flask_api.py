@@ -3,9 +3,9 @@ from datetime import datetime
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import text, case, func
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import case, func, text
 
 load_dotenv()
 
@@ -25,8 +25,9 @@ class Story(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     url = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    created_at = db.Column(
+        db.DateTime(timezone=True), nullable=False, default=datetime.now()
+    )
 
     def __repr__(self):
         return "<Story %r>" % self.title
@@ -61,7 +62,6 @@ def story_object_to_dictionary(story_objs: Story) -> dict:
         "title": story_obj.title,
         "url": story_obj.url,
         "created_at": story_obj.created_at,
-        "updated_at": story_obj.updated_at,
         "score": story_objs[1],
     }
 
