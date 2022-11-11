@@ -1,14 +1,9 @@
-# TODO:
-# put all relevant information into a dictionary
-# apply dictionary to all in soup using for loop
-# populate database
-# test that is comes up on the frontend
-import webscraper_to_db
-
 from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup as bs
+
+import webscraper_to_db
 
 POST_BLOCK_CLASS = "post-block__header"
 AUTHOR_CLASS = "river-byline__authors"
@@ -72,18 +67,19 @@ def get_url(filtered_soup_element) -> str:
     return url
 
 
-def get_author(filtered_soup_element) -> str:
-    """Returns the author associated with a story
+"""Implement after finishing mvp"""
+# def get_author(filtered_soup_element) -> str:
+#     """Returns the author associated with a story
 
-    Args:
-        filtered_soup_element: an element from a BeautifulSoup object
+#     Args:
+#         filtered_soup_element: an element from a BeautifulSoup object
 
-    Returns:
-        author: the author for a story
-    """
-    author_elements = filtered_soup_element.find(attrs={"class": AUTHOR_CLASS})
-    author = author_elements.get_text().strip("\n")
-    return author
+#     Returns:
+#         author: the author for a story
+#     """
+#     author_elements = filtered_soup_element.find(attrs={"class": AUTHOR_CLASS})
+#     author = author_elements.get_text().strip("\n")
+#     return author
 
 
 def get_created_date(filtered_soup_element) -> datetime:
@@ -113,7 +109,6 @@ def create_story_dictionary(filtered_soup_element) -> dict:
 
     story = {
         "title": get_title(filtered_soup_element),
-        "author": get_author(filtered_soup_element),
         "url": get_url(filtered_soup_element),
         "created_at": get_created_date(filtered_soup_element),
     }
@@ -139,6 +134,5 @@ def generate_stories(url=TECH_CRUNCH_URL) -> list:
 
 if __name__ == "__main__":
     stories = generate_stories()
-
-    for story in stories:
-        print(f"{story}\n\n")
+    db_connection = webscraper_to_db.DBConnection()
+    db_connection.add_stories(stories)
