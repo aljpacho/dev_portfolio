@@ -1,6 +1,7 @@
 .sqlite3
 .env
 .DS_store
+.cache
 venv
 node_modules
 package-lock.json
