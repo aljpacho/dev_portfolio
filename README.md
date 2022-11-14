@@ -1,7 +1,10 @@
 # dev_portfolio
 
 ## fortuneteller
-Django applciation
+Django application
 
 ## reddit_clone
 Flask application
+
+## spotify_visualisation
+Visualising my own spotify data using Spotipy and Pandas
