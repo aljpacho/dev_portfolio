@@ -35,6 +35,12 @@ function updateScore(winner) {
   }
 }
 
+/** 
+* Advances the round by incrementing currentRoundNumber by 1 
+*/
+function advanceRound() {
+    currentRoundNumber ++;
+}
 
 
 function main() {
