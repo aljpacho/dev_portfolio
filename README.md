@@ -1,10 +1,13 @@
-# dev_portfolio
+# Developer Portfolio
 
-## fortuneteller
+## Fortuneteller
 Django application
 
-## reddit_clone
+## Flask Reddit Clone
 Flask application
 
-## spotify_visualisation
+## Spotify Visualisation
 Visualising my own spotify data using Spotipy and Pandas
+
+## Number Guesser
+Number guessing game made using Vanilla JavaScript, HTML, and CSS.
