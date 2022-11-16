@@ -23,10 +23,10 @@ function compareGuesses(humanGuess, computerGuess, target) {
   return playerDiff <= computerDiff ? true : false;
 }
 
-/** 
-* Increments either the humanScore or computer score depending on the input
-* @param {String} winner - either 'human' or 'computer'
-*/
+/**
+ * Increments either the humanScore or computer score depending on the input
+ * @param {String} winner - either 'human' or 'computer'
+ */
 function updateScore(winner) {
   if (winner === "human") {
     humanScore++;
@@ -35,19 +35,9 @@ function updateScore(winner) {
   }
 }
 
-/** 
-* Advances the round by incrementing currentRoundNumber by 1 
-*/
+/**
+ * Advances the round by incrementing currentRoundNumber by 1
+ */
 function advanceRound() {
-    currentRoundNumber ++;
+  currentRoundNumber++;
 }
-
-
-function main() {
-  const target = generateTarget();
-  console.log(target);
-  const winner = compareGuesses(4, 6, target);
-  console.log(winner);
-}
-
-main();
