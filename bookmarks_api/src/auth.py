@@ -12,12 +12,24 @@ def register():
     email = request.json["email"]
     password = request.json["password"]
 
+    if username.isalnum():
+        return (
+            jsonify({"error": "Username is not alphanumeric or contains whitespace"}),
+            HTTPStatus.BAD_REQUEST.value,
+            HTTPStatus.BAD_REQUEST.phrase,
+        )
+    elif len(username) < 4:
+        return (
+            jsonify({"error": "Username is too short. Must be at least 5 characters."}),
+            HTTPStatus.BAD_REQUEST.value,
+            HTTPStatus.BAD_REQUEST.phrase,
+        )
+
     if len(password) < 8:
         return (
             jsonify({"error": "Password is too short"}),
             HTTPStatus.BAD_REQUEST.value,
             HTTPStatus.BAD_REQUEST.phrase,
         )
-    
 
     return "User created"
