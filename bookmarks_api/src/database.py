@@ -1,3 +1,5 @@
+import random
+import string
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
@@ -12,7 +14,7 @@ class User(db.Model):
     password = db.column(db.Text, nullable=False)
     created_at = db.column(db.DateTime, default=datetime.now())
     updated_at = db.column(db.Datetime, onupdate=datetime.now())
-    bookmarks=db.relationship('Bookmark', backref='user')
+    bookmarks = db.relationship("Bookmark", backref="user")
 
     def __repr__(self):
         return f"User: {self.username}"
@@ -27,3 +29,24 @@ class Bookmark(db.Model):
     created_at = db.column(db.DateTime, default=datetime.now())
     updated_at = db.column(db.Datetime, onupdate=datetime.now())
     user_id = db.column(db.Integer, db.ForeignKey("user.id"))
+
+    def generate_short_id(self, num_of_chars=3) -> str:
+        """Generates a short ID using all digits and ASCII letters
+        Args:
+            num_of_chars (int): Number of characters in the ID Defaults to 3.
+
+        Returns:
+            str: random characters if they don't already exist in the database
+        """
+        characters = string.digits + string.ascii_letters
+        random_chars = "".join(random.choices(characters, k=num_of_chars))
+
+        short_id_exists = self.query.filter_by(short_url=random_chars).first()
+
+        if short_id_exists:
+            self.generate_short_id()
+        else:
+            return random_chars
+
+    def __repr__(self):
+        return f"Bookmark: {self.url}"
