@@ -2,7 +2,8 @@ from http import HTTPStatus
 
 import validators
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import (create_access_token, create_refresh_token,
+                                get_jwt_identity, jwt_required)
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from src.database import Users, db
@@ -84,7 +85,7 @@ def register():
 @auth.post("/login")
 def login():
     email = request.json.get("email", "")
-    password = request.json.geet("password", "")
+    password = request.json.get("password", "")
 
     user = Users.query.filter_by(email=email).first()
 
@@ -111,5 +112,19 @@ def login():
         {
             "error": "Wrong credentials",
             "status": f"{HTTPStatus.UNAUTHORIZED} {HTTPStatus.UNAUTHORIZED.phrase}",
+        }
+    )
+
+
+@auth.get("/token/refresh")
+@jwt_required(refresh=True)
+def refresh_users_token():
+    identity = get_jwt_identity()
+    access_token = create_access_token(identity=identity)
+
+    return jsonify(
+        {
+            "access-token": access_token,
+            "status": f"{HTTPStatus.OK} {HTTPStatus.OK.phrase}",
         }
     )
