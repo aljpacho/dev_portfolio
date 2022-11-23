@@ -2,8 +2,12 @@ from http import HTTPStatus
 
 import validators
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import (create_access_token, create_refresh_token,
-                                get_jwt_identity, jwt_required)
+from flask_jwt_extended import (
+    create_access_token,
+    create_refresh_token,
+    get_jwt_identity,
+    jwt_required,
+)
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from src.database import Users, db
@@ -98,6 +102,7 @@ def login():
 
             return jsonify(
                 {
+                    "message": "Login successful",
                     "user": {
                         "refresh-token": refresh_token,
                         "access-token": access_token,
