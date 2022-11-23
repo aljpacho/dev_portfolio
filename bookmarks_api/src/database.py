@@ -7,14 +7,14 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
-    bookmarks = db.relationship("Bookmark", backref="user")
+    bookmarks = db.relationship("Bookmark", backref="users")
 
     def __repr__(self):
         return f"User: {self.username}"
@@ -28,7 +28,7 @@ class Bookmark(db.Model):
     visits = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     def generate_short_id(self, num_of_chars=3) -> str:
         """Generates a short ID using all digits and ASCII letters
