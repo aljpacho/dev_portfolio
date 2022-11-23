@@ -7,6 +7,26 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 bookmarks = Blueprint("bookmarks", __name__, url_prefix="/api/v1/bookmarks")
 
 
+def parse_bookmark_to_dictionary(bookmark_obj) -> dict:
+    """Parses a bookmark model object to a dictionary
+
+    Args:
+        bookmark_obj: a bookmark object returned from an SQLAlchemy query
+
+    Returns:
+        dict: dictionary with bookmark attributes
+    """
+    return {
+        "id": bookmark_obj.id,
+        "url": bookmark_obj.url,
+        "short_url": bookmark_obj.short_url,
+        "visits": bookmark_obj.visits,
+        "body": bookmark_obj.body,
+        "created_at": bookmark_obj.created_at,
+        "updated_at": bookmark_obj.updated_at,
+    }
+
+
 @bookmarks.route("/", methods=["GET", "POST"])
 @jwt_required
 def bookmarks():
@@ -53,4 +73,16 @@ def bookmarks():
                 },
                 "status": f"{HTTPStatus.CREATED} {HTTPStatus.CREATED.phrase} ",
             }
+        )
+
+    else:
+
+        bookmarks_query = Bookmark.query.filter_by(user_id=current_user)
+
+        bookmarks = [
+            parse_bookmark_to_dictionary(bookmark) for bookmark in bookmarks_query
+        ]
+
+        return jsonify(
+            {"data": bookmarks, "status": f"{HTTPStatus.OK} {HTTPStatus.OK.phrase}"}
         )
