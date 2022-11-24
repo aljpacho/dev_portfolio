@@ -27,6 +27,26 @@ def parse_bookmark_to_dictionary(bookmark_obj) -> dict:
     }
 
 
+def parse_meta_from_bookmarks(bookmarks) -> dict:
+    """Parses the pagination attributes from a bookmark query
+
+    Args:
+        bookmarks: a Flask-SQLAlchemy pagination object
+
+    Returns:
+        dict: dictionary with pagination attributes
+    """
+    return {
+        "page": bookmarks.page,
+        "pages": bookmarks.pages,
+        "total_count": bookmarks.total,
+        "prev_page": bookmarks.prev_num,
+        "next_page": bookmarks.next_num,
+        "has_next": bookmarks.has_next,
+        "has_prev": bookmarks.next_num,
+    }
+
+
 @bookmarks.route("/", methods=["GET", "POST"])
 @jwt_required()
 def bookmarks_handler():
@@ -76,13 +96,24 @@ def bookmarks_handler():
         )
 
     else:
+        # page variables for pagination
+        page = request.args.get("page", 1, type=int)
+        per_page = request.args.get("per_page", 5, type=int)
 
-        bookmarks_query = Bookmark.query.filter_by(user_id=current_user)
+        bookmarks_query = Bookmark.query.filter_by(user_id=current_user).paginate(
+            page=page, per_page=per_page
+        )
 
         bookmarks = [
-            parse_bookmark_to_dictionary(bookmark) for bookmark in bookmarks_query
+            parse_bookmark_to_dictionary(bookmark) for bookmark in bookmarks_query.items
         ]
 
+        meta_pagination = parse_meta_from_bookmarks(bookmarks_query)
+
         return jsonify(
-            {"data": bookmarks, "status": f"{HTTPStatus.OK} {HTTPStatus.OK.phrase}"}
+            {
+                "data": bookmarks,
+                "meta": meta_pagination,
+                "status": f"{HTTPStatus.OK} {HTTPStatus.OK.phrase}",
+            }
         )
