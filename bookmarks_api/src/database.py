@@ -48,5 +48,10 @@ class Bookmark(db.Model):
         else:
             return random_chars
 
+    def __init__(self, **columns):
+        super().__init__(**columns)
+
+        self.short_url = self.generate_short_id()
+
     def __repr__(self):
         return f"Bookmark: {self.url}"
