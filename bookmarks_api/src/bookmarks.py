@@ -1,8 +1,10 @@
-from flask import Blueprint, request, jsonify
-import validators
 from http import HTTPStatus
-from src.database import Bookmark, db
+
+import validators
+from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
+
+from src.database import Bookmark, db
 
 bookmarks = Blueprint("bookmarks", __name__, url_prefix="/api/v1/bookmarks")
 
@@ -44,6 +46,24 @@ def parse_meta_from_bookmarks(bookmarks) -> dict:
         "next_page": bookmarks.next_num,
         "has_next": bookmarks.has_next,
         "has_prev": bookmarks.next_num,
+    }
+
+
+def parse_stats_from_bookmark(bookmark_obj) -> dict:
+    """Parse bookmark statistics for bookmark object: id, visits,
+    url, and short url
+
+    Args:
+        bookmark_obj: a bookmark object return from SQLAlchemy model
+
+    Returns:
+        dict: dictionary with attributes for statistics
+    """
+    return {
+        "id": bookmark_obj.id,
+        "visits": bookmark_obj.visits,
+        "url": bookmark_obj.url,
+        "short_url": bookmark_obj.short_url,
     }
 
 
@@ -207,4 +227,18 @@ def delete_bookmark(id):
             "message": "Item deleted",
             "status": f"{HTTPStatus.ACCEPTED} {HTTPStatus.ACCEPTED.phrase}",
         }
+    )
+
+
+@bookmarks.get("/statistics")
+@jwt_required()
+def get_statistics():
+    current_user = get_jwt_identity()
+
+    bookmarks_query = Bookmark.query.filter_by(user_id=current_user).all()
+
+    statistics = [parse_stats_from_bookmark(bookmark) for bookmark in bookmarks_query]
+
+    return jsonify(
+        {"data": statistics, "status": f"{HTTPStatus.OK} {HTTPStatus.OK.phrase}"}
     )
