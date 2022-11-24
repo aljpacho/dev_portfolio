@@ -117,3 +117,25 @@ def bookmarks_handler():
                 "status": f"{HTTPStatus.OK} {HTTPStatus.OK.phrase}",
             }
         )
+
+
+@bookmarks.get("/<int:id>")
+@jwt_required()
+def get_bookmark(id):
+    current_user = get_jwt_identity()
+
+    bookmark_query = Bookmark.query.filter_by(user_id=current_user, id=id).first()
+
+    if not bookmark_query:
+        return jsonify(
+            {
+                "message": "Item not found",
+                "status": f"{HTTPStatus.NOT_FOUND} {HTTPStatus.NOT_FOUND.phrase}",
+            }
+        )
+
+    bookmark = parse_bookmark_to_dictionary(bookmark_query)
+
+    return jsonify(
+        {"data": bookmark, "status": f"{HTTPStatus.OK} {HTTPStatus.OK.phrase}"}
+    )
