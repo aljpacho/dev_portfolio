@@ -22,7 +22,7 @@ def create_app(test_config=None):
             JWT_SECRET_KEY=os.environ.get("JWT_SECRET_KEY"),
 
             SWAGGER = {
-                'title': "Bookmarks API"
+                'title': "Bookmarks API",
                 'uiversion': 3
             }
         )
@@ -40,6 +40,7 @@ def create_app(test_config=None):
     Swagger(app, config=swagger_config, template=template)
 
     @app.get("/<short_url>")
+    @swag_from('./docs/short_url.yml')
     def redirect_to_url(short_url):
         bookmark_query = Bookmark.query.filter_by(short_url=short_url).first_or_404()
 
