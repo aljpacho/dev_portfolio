@@ -139,3 +139,29 @@ def get_bookmark(id):
     return jsonify(
         {"data": bookmark, "status": f"{HTTPStatus.OK} {HTTPStatus.OK.phrase}"}
     )
+
+
+@bookmarks.delete('/<int:id>')
+@jwt_required()
+def delete_bookmark(id):
+    current_user = get_jwt_identity()
+
+    bookmark_query = Bookmark.query.filter_by(user_id=current_user, id=id).first()
+
+    if not bookmark_query:
+        return jsonify(
+            {
+                "message": "Item not found",
+                "status": f"{HTTPStatus.NOT_FOUND} {HTTPStatus.NOT_FOUND.phrase}",
+            }
+        )
+    
+    db.session.delete(bookmark_query)
+    db.session.commit()
+
+    return jsonify(
+        {
+            'message': 'Item deleted',
+            'status': f'{HTTPStatus.ACCEPTED} {HTTPStatus.ACCEPTED.phrase}'
+        }
+    )
