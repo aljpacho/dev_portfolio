@@ -9,6 +9,7 @@ from flask_jwt_extended import (
     jwt_required,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+from flasgger import Swagger, swag_from
 
 from src.database import Users, db
 
@@ -87,6 +88,7 @@ def register():
 
 
 @auth.post("/login")
+@swag_from("./docs/auth/login.yml")
 def login():
     email = request.json.get("email", "")
     password = request.json.get("password", "")
