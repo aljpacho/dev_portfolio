@@ -17,6 +17,7 @@ auth = Blueprint("auth", __name__, url_prefix="/api/v1/auth")
 
 
 @auth.post("/register")
+@swag_from("./docs/auth/register.yml")
 def register():
     username = request.json["username"]
     email = request.json["email"]
