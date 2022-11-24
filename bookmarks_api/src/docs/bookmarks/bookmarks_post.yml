@@ -1,0 +1,31 @@
+Add a bookmark for the current user
+---
+tags: 
+  - Bookmarks
+parameters:
+  - name: body
+    description: The body should contain a description of the bookmark
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "url"
+        - "body"
+      properties:
+        url:
+          type: "url"
+          example: "www.google.com"
+        body: 
+          type: "string"
+          example: "Bookmark for Google"
+
+responses: 
+  201:
+    description: Bookmark added
+  
+  400: 
+    description: Invalid url
+
+  409:
+    description: Bookmark already added
