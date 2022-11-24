@@ -1,7 +1,8 @@
 import os
 
-from flask import Flask, redirect
+from flask import Flask, redirect, jsonify
 from flask_jwt_extended import JWTManager
+from http import HTTPStatus
 
 from src.auth import auth
 from src.bookmarks import bookmarks
@@ -37,5 +38,19 @@ def create_app(test_config=None):
             bookmark_query.visits = bookmark_query.visits + 1
             db.session.commit()
             return redirect(bookmark_query.url)
+
+    @app.errorhandler(HTTPStatus.NOT_FOUND)
+    def handle_not_found_error(e):
+        return jsonify(
+            {"error": f"{HTTPStatus.NOT_FOUND} {HTTPStatus.NOT_FOUND.phrase}"}
+        )
+
+    @app.errorhandler(HTTPStatus.INTERNAL_SERVER_ERROR)
+    def handle_internal_server_error(e):
+        return jsonify(
+            {
+                "error": f"{HTTPStatus.INTERNAL_SERVER_ERROR} {HTTPStatus.INTERNAL_SERVER_ERROR.phrase}"
+            }
+        )
 
     return app
