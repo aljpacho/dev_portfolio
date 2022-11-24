@@ -28,14 +28,14 @@ def parse_bookmark_to_dictionary(bookmark_obj) -> dict:
 
 
 @bookmarks.route("/", methods=["GET", "POST"])
-@jwt_required
-def bookmarks():
+@jwt_required()
+def bookmarks_handler():
 
     current_user = get_jwt_identity()
 
     if request.method == "POST":
-        body = request.json("body", "")
-        url = request.json("url", "")
+        body = request.json.get("body", "")
+        url = request.json.get("url", "")
 
         if not validators.url(url):
             return jsonify(
