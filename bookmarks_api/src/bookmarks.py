@@ -1,12 +1,13 @@
 from http import HTTPStatus
 
 import validators
+from flasgger import swag_from
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from src.database import Bookmark, db
 
-bookmarks = Blueprint("bookmarks", __name__, url_prefix="/api/v1/bookmarks")
+_bookmarks = Blueprint("_bookmarks", __name__, url_prefix="/api/v1/bookmarks")
 
 
 def parse_bookmark_to_dictionary(bookmark_obj) -> dict:
@@ -29,23 +30,23 @@ def parse_bookmark_to_dictionary(bookmark_obj) -> dict:
     }
 
 
-def parse_meta_from_bookmarks(bookmarks) -> dict:
+def parse_meta_from_bookmarks(bookmarks_obj) -> dict:
     """Parses the pagination attributes from a bookmark query
 
     Args:
-        bookmarks: a Flask-SQLAlchemy pagination object
+        bookmarks_obj: a Flask-SQLAlchemy pagination object
 
     Returns:
         dict: dictionary with pagination attributes
     """
     return {
-        "page": bookmarks.page,
-        "pages": bookmarks.pages,
-        "total_count": bookmarks.total,
-        "prev_page": bookmarks.prev_num,
-        "next_page": bookmarks.next_num,
-        "has_next": bookmarks.has_next,
-        "has_prev": bookmarks.next_num,
+        "page": bookmarks_obj.page,
+        "pages": bookmarks_obj.pages,
+        "total_count": bookmarks_obj.total,
+        "prev_page": bookmarks_obj.prev_num,
+        "next_page": bookmarks_obj.next_num,
+        "has_next": bookmarks_obj.has_next,
+        "has_prev": bookmarks_obj.next_num,
     }
 
 
@@ -67,8 +68,10 @@ def parse_stats_from_bookmark(bookmark_obj) -> dict:
     }
 
 
-@bookmarks.route("/", methods=["GET", "POST"])
+@_bookmarks.route("/", methods=["GET", "POST"])
 @jwt_required()
+@swag_from("./docs/bookmarks/bookmarks_get.yml", methods=["GET"])
+@swag_from("./docs/bookmarks/bookmarks_post.yml", methods=["POST"])
 def bookmarks_handler():
 
     current_user = get_jwt_identity()
@@ -139,8 +142,9 @@ def bookmarks_handler():
         )
 
 
-@bookmarks.get("/<int:id>")
+@_bookmarks.get("/<int:id>")
 @jwt_required()
+@swag_from("./docs/bookmarks/bookmark_by_id.yml")
 def get_bookmark(id):
     current_user = get_jwt_identity()
 
@@ -161,9 +165,10 @@ def get_bookmark(id):
     )
 
 
-@bookmarks.put("/<int:id>")
-@bookmarks.patch("/<int:id>")
+@_bookmarks.put("/<int:id>")
+@_bookmarks.patch("/<int:id>")
 @jwt_required()
+@swag_from("./docs/bookmarks/bookmark_id_patch.yml")
 def update_bookmark(id):
     current_user = get_jwt_identity()
 
@@ -204,8 +209,9 @@ def update_bookmark(id):
     )
 
 
-@bookmarks.delete("/<int:id>")
+@_bookmarks.delete("/<int:id>")
 @jwt_required()
+@swag_from("./docs/bookmarks/bookmark_id_delete.yml")
 def delete_bookmark(id):
     current_user = get_jwt_identity()
 
@@ -230,8 +236,9 @@ def delete_bookmark(id):
     )
 
 
-@bookmarks.get("/statistics")
+@_bookmarks.get("/statistics")
 @jwt_required()
+@swag_from("./docs/bookmarks/statistics.yml")
 def get_statistics():
     current_user = get_jwt_identity()
 
