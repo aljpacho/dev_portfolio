@@ -1,0 +1,15 @@
+Delete an existing bookmark by ID
+---
+tags:
+  - Bookmarks
+parameters:
+  - in: header
+    name: Authorization
+    required: true
+
+responses: 
+  202:
+    description: Bookmark deleted
+  
+  404:
+    description: Bookmark not found
