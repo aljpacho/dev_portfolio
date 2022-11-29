@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 import validators
+from flasgger import swag_from
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import (
     create_access_token,
@@ -9,14 +10,13 @@ from flask_jwt_extended import (
     jwt_required,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-from flasgger import Swagger, swag_from
 
 from src.database import Users, db
 
-auth = Blueprint("auth", __name__, url_prefix="/api/v1/auth")
+_auth = Blueprint("_auth", __name__, url_prefix="/api/v1/auth")
 
 
-@auth.post("/register")
+@_auth.post("/register")
 @swag_from("./docs/auth/register.yml")
 def register():
     username = request.json["username"]
@@ -88,7 +88,7 @@ def register():
     )
 
 
-@auth.post("/login")
+@_auth.post("/login")
 @swag_from("./docs/auth/login.yml")
 def login():
     email = request.json.get("email", "")
@@ -124,8 +124,9 @@ def login():
     )
 
 
-@auth.get("/token/refresh")
+@_auth.get("/token/refresh")
 @jwt_required(refresh=True)
+@swag_from("./docs/auth/token_refresh.yml")
 def refresh_users_token():
     identity = get_jwt_identity()
     access_token = create_access_token(identity=identity)
