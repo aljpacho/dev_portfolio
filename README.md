@@ -4,7 +4,11 @@
 Django application
 
 ## Flask Reddit Clone
-Flask application
+Reddit Clone made using Flask backend and static frontend. The application uses Flask as a REST API which handles HTTP requests that serve the frontend. Top news headlines are scraped from "https://techcrunch.com/" using BeautifulSoup.
+
+Frontend                   |            Backend
+:-------------------------:|:-------------------------:
+![reddit-clone-frontend](./assets/images/reddit-clone-imgs/reddit-clone-frontend.png)  |  ![reddit-clone-api](./assets/images/reddit-clone-imgs/reddit-clone-api.png)
 
 ## Spotify Visualisation
 Visualising my own spotify data using Spotipy and Pandas
