@@ -1,0 +1,31 @@
+Update an existing bookmark by ID
+---
+tags:
+  - Bookmarks
+parameters:
+  - name: body
+    description: The body should contain the description of the bookmark with updated fields
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "url"
+        - "body"
+      properties:
+        url:
+          type: "url"
+          example: "www.google.co.uk"
+        body: 
+          type: "string"
+          example: "Updated bookmark for Google"
+
+responses: 
+  200:
+    description: Bookmark updated
+  
+  400: 
+    description: Invalid url
+
+  404:
+    description: Bookmark not found
