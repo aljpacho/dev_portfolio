@@ -4,7 +4,7 @@
 Django application
 
 ## Flask Reddit Clone
-Reddit Clone made using Flask backend and static frontend. The application uses Flask as a REST API which handles HTTP requests that serve the frontend. Top news headlines are scraped from "https://techcrunch.com/" using BeautifulSoup.
+Reddit Clone made using Flask backend and static frontend. The application uses Flask as a REST API which handles HTTP requests that serve the frontend. Top news headlines are scraped from https://techcrunch.com/ using BeautifulSoup.
 
 Frontend                   |            Backend
 :-------------------------:|:-------------------------:

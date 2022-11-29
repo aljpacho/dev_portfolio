@@ -1,5 +1,5 @@
 # Reddit Clone
-Reddit Clone made using Flask backend and static frontend. The application uses Flask as a REST API which handles HTTP requests to a local RDBMS. The webscraper is used to scrape the top news headlines from "https://techcrunch.com/" and inserts the cleaned data into the RDBMS for use from the frontend. The REST API supports all CRUD operations for creating, reading, updating, deleting news stories.
+Reddit Clone made using Flask backend and static frontend. The application uses Flask as a REST API which handles HTTP requests to a local RDBMS. The webscraper is used to scrape the top news headlines from https://techcrunch.com/ and inserts the cleaned data into the RDBMS for use from the frontend. The REST API supports all CRUD operations for creating, reading, updating, deleting news stories.
 
 ## Flask REST API
 
