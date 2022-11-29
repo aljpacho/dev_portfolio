@@ -1,0 +1,16 @@
+Get all bookmarks for the current user
+---
+tags:
+  - Bookmarks
+
+parameters:
+  - in: header
+    name: Authorization
+    required: true
+  
+responses:
+  200:
+    description: All bookmark data for the current user
+    
+  401: 
+    description: Failed to authenticate the current user

@@ -1,0 +1,15 @@
+Get a bookmark by bookmark id
+---
+tags:
+  - Bookmarks
+parameters:
+  - in: path
+    name: bookmark-id
+    required: true
+
+responses:
+  200: 
+    description: Bookmark with bookmark-id
+  
+  404: 
+    description: Bookmark not found 
