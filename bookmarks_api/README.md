@@ -13,6 +13,9 @@ To open the API reference use
 
 and go to "http://127.0.0.1:5000/"
 
+![screenshot-of-swagger-docs](../assets/images/bookmarks_api_swagger.png)
+<figcaption>Screenshot of available endpoints documented in Swagger UI</figcaption>
+
 # Future Work
 
 <ul>
