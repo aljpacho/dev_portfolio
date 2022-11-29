@@ -1,0 +1,14 @@
+Refresh access token for the current user
+---
+tags:
+  - Authorization
+
+parameters:
+  - in: header
+    name: Authorization
+    required: true
+
+responses: 
+  200:
+    description: Access token refreshed
+  
