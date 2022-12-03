@@ -23,27 +23,68 @@ main {
 }
 
 .search-wrapper {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
 }
 
 .search-wrapper button {
-    color: white;
-    background-color: #4a7856;
-    font-size: 1em;
-    text-align: center;
-    padding: 1em 0;
-    border: none;
-    border-radius: 1.5em;
+  color: white;
+  background-color: #4a7856;
+  font-size: 1em;
+  text-align: center;
+  padding: 1em 2.5em;
+  border: none;
+  border-radius: 1.5em;
 }
 
 .search-wrapper input {
-    color: #344055;
-    background-color: #e0e0e0;
-    font-size: 1em;
-    border: none;
-    border-bottom: 2px solid #4a7856;
-    padding: 0 0 0.5em;
-    line-height: 1em;
-    outline: none;
+  color: #344055;
+  background-color: #e0e0e0;
+  font-size: 1em;
+  border: none;
+  border-bottom: 2px solid #4a7856;
+  padding: 0 0 0.5em;
+  line-height: 1em;
+  outline: none;
+}
+
+.wrapper {
+  margin-bottom: 1em;
+  letter-spacing: 0.3px;
+}
+
+.data-wrapper {
+  margin-bottom: 1em;
+  letter-spacing: 0.3px;
+}
+
+main .flag-img {
+  display: block;
+  width: 45%;
+  min-width: 7.5em;
+  margin: 1.8em auto 1.2em auto;
+}
+
+main h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+main h3 {
+  text-align: center;
+  font-weight: 500;
+  margin-top: 2em;
+  color: #344055;
+}
+
+main h4 {
+  display: inline;
+  font-weight: 700;
+  color: black;
+}
+
+main span {
+  color: #344055;
 }
