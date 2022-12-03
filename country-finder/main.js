@@ -46,5 +46,11 @@ searchBtn.addEventListener("click", () => {
         </div>
       </div>
       `;
-    });
+    }).catch(() => {
+        if (countryName.length == 0) {
+            document.getElementById("result").innerHTML = "<h3>Please enter a country"
+        } else {
+            document.getElementById("result").innerHTML = "<h3>Please enter a valid country</h3>"
+        }
+    })
 });
