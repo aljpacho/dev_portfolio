@@ -15,6 +15,9 @@ Number guessing game made using Vanilla JavaScript, HTML, and CSS.
 ![screenshot-of-game](./assets/images/number-guess.png)
 <figcaption>Screenshot of the game in browser</figcaption>
 
+## Country Finder
+Simple web application to find information about a country. Consumes data from the public API https://restcountries.com/
+
 ## Booksmarks REST API
 Bookmarks REST API using Flask. Handles CRUD operations for web bookmarks using protected endpoints and user authentication. An API reference page was created using Swagger documentation. 
 
