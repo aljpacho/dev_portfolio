@@ -1,0 +1,23 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #9A7AA0;
+}
+
+main {
+    background-color: #E0E0E0;
+    position: absolute;
+    width: 80vw;
+    max-width: 37.5em;
+    padding: 3em 3em;
+    max-width: 37.5em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 0.5em;
+    box-shadow: 0 0.5em 1em rgb(0, 0, 0);
+  }
