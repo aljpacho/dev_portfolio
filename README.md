@@ -1,5 +1,8 @@
 # Developer Portfolio
 
+## Blackjack
+Blackjack game made using OOA, OOD, and OOP processes
+
 ## Fortuneteller
 Django application
 
