@@ -1,6 +1,8 @@
 from random import shuffle
 
 # TODO: make classes for deck, card, player, hand, dealer, game
+# Implement classes for strategies
+
 
 
 # class for card
@@ -54,13 +56,21 @@ class Deck:
         else:
             return card
 
+class Hand:
+    def __init__(self, cards: list):
+        self.hand = cards
+
+    def get_hand(self):
+        return self.hand
+   
+    def get_value(self):
+        value = 0
+        if self.hand is None:
+            return value
+        else: 
+            for card in self.hand:
+                value += card.value()
+            return value 
 
 if __name__ == "__main__":
-    test_card = Card("2", "D")
-    print(test_card)
-    print(test_card)
-    deck = Deck()
-    # print(deck.get_cards())
-    deck.shuffle()
-    print(deck.get_cards())
-    deck.draw_card()
+    pass
